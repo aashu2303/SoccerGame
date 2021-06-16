@@ -2,6 +2,7 @@ import time
 
 import pygame
 from pygame_widgets import Button, TextBox
+import sys
 
 screen_width = 1500
 screen_height = 700
@@ -33,6 +34,26 @@ def plot_ball(window, color, centre, radius):
     pygame.draw.circle(window, color, centre, radius)
 def plot_wall(window, color, specs):
     pygame.draw.rect(window, color, specs)
+
+def ending(SCORE_1, SCORE_2):
+    exit_game = False
+    while not exit_game:
+        window.fill(black)
+        events = pygame.event.get()
+        for event in events:
+            if event.type == pygame.QUIT:
+                sys.exit(0)
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    sys.exit(0)
+        if SCORE_2 > SCORE_1:
+            text_screen(f"PLAYER 2 IS THE WINNER \n SCORE DIFFERENCE: {SCORE_2 - SCORE_1}", black, 300, 400)
+        elif SCORE_1 > SCORE_2:
+            text_screen(f"PLAYER 1 IS THE WINNER \n SCORE DIFFERENCE: {SCORE_1 - SCORE_2}", black, 300, 400)
+        else:
+            text_screen(f"THE GAME ENDED IN DRAW \n BOTH PLAYERS PLAYED WELL", black, 300, 400)
+        pygame.display.update()
+        clock.tick(60)
 
 def gameloop():
     time.sleep(1)
@@ -67,6 +88,8 @@ def gameloop():
                 pygame.quit()
                 quit()
             elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    ending(SCORE_1, SCORE_2)
                 if event.key == pygame.K_DOWN:
                     wall_vel_2 = 5
                 if event.key == pygame.K_UP:
@@ -75,6 +98,7 @@ def gameloop():
                     wall_vel_1 = -5
                 if event.key == pygame.K_s:
                     wall_vel_1 = 5
+
         if ball_x - ball_radius <= 5:
             ball_vel_x = -ball_vel_x
             pygame.mixer.music.load('hit_sound.wav')
@@ -154,7 +178,7 @@ def welcome():
             inactiveColour=(100, 200, 255),
             hoverColour=(255, 244, 122),
             pressedColour=(123, 234, 124),
-            onClick=print("CLICK"),
+            onClick=lambda: print("CLICK"),
             # onRelease=gameloop(),
             shadowDistance=10,
             shadowColour=(50, 50, 50),
