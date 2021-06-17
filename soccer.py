@@ -38,7 +38,7 @@ def plot_wall(window, color, specs):
 def ending(SCORE_1, SCORE_2):
     exit_game = False
     while not exit_game:
-        window.fill(black)
+        window.fill(yellow)
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.QUIT:
@@ -85,8 +85,7 @@ def gameloop():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
+                sys.exit(0)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     ending(SCORE_1, SCORE_2)
@@ -165,7 +164,7 @@ def welcome():
         # win = pygame.image.load('D:\\aashu\\AashuPython\\OpenCV\\1.png')
         # window.blit(win, (0,0))
         text = TextBox(
-            window, 350, 50, 750, 150,
+            window, 375, 50, 750, 150,
             colour=yellow,
             borderColour=red,
             borderThickness=15,
@@ -192,7 +191,7 @@ def welcome():
             hoverColour=(255, 244, 122),
             pressedColour=(123, 234, 124),
             onClick=lambda: print("Click"),
-            onRelease=lambda: exit(0),
+            onRelease=lambda: sys.exit(0),
             shadowDistance=10,
             shadowColour=(50, 50, 50),
             radius=10,
