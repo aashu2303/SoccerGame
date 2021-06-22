@@ -1,5 +1,4 @@
 import time
-
 import pygame
 from pygame_widgets import Button, TextBox
 import sys
@@ -21,7 +20,7 @@ pygame.init()
 pygame.mixer.init()
 
 clock = pygame.time.Clock()
-font = pygame.font.SysFont(None, 50,)
+font = pygame.font.SysFont(None, 50)
 window = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('SOCCER GAME')
 pygame.display.update()
@@ -38,7 +37,16 @@ def plot_wall(window, color, specs):
 def ending(SCORE_1, SCORE_2):
     exit_game = False
     while not exit_game:
-        window.fill(yellow)
+        window.fill(black)
+        text = TextBox(
+            window, 600, 50, 335, 150,
+            colour=yellow,
+            borderColour=red,
+            borderThickness=15,
+            textColour=(0, 10, 20),
+            fontSize=100
+        )
+        text.setText("RESULT")
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.QUIT:
@@ -46,12 +54,17 @@ def ending(SCORE_1, SCORE_2):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     sys.exit(0)
+
         if SCORE_2 > SCORE_1:
-            text_screen(f"PLAYER 2 IS THE WINNER \n SCORE DIFFERENCE: {SCORE_2 - SCORE_1}", black, 300, 400)
+            text_screen(f"PLAYER 2 IS THE WINNER", red, 500, 300)
+            text_screen(f"SCORE DIFFERENCE: {SCORE_2 - SCORE_1}", red, 550, 400)
         elif SCORE_1 > SCORE_2:
-            text_screen(f"PLAYER 1 IS THE WINNER \n SCORE DIFFERENCE: {SCORE_1 - SCORE_2}", black, 300, 400)
+            text_screen(f"PLAYER 1 IS THE WINNER", red, 500, 300)
+            text_screen(f"SCORE DIFFERENCE: {SCORE_2 - SCORE_1}", red, 550, 400)
         else:
-            text_screen(f"THE GAME ENDED IN DRAW \n BOTH PLAYERS PLAYED WELL", black, 300, 400)
+            text_screen(f"THE GAME ENDED IN DRAW", red, 500, 300)
+            text_screen((f"WELL DONE PLAYERS!!"), red, 550, 400)
+        text.draw()
         pygame.display.update()
         clock.tick(60)
 
@@ -82,7 +95,6 @@ def gameloop():
 
     while not exit_game:
         window.fill(black)
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit(0)
@@ -149,7 +161,6 @@ def gameloop():
         pygame.draw.rect(window, border_color, [0, 0, screen_width, 10])
         pygame.draw.rect(window, border_color, [0, screen_height - 10, screen_width, 10])
         pygame.draw.rect(window, border_color, [screen_width - 10, 0, 10, screen_height])
-        # pygame.draw.circle(window, green, )
         plot_ball(window, ball_color, [ball_x, ball_y], ball_radius)
         plot_wall(window, wall_color, [wall_x1, wall_y1, wall_breadth, wall_length])
         plot_wall(window, wall_color, [wall_x2, wall_y2, wall_breadth, wall_length])
@@ -161,8 +172,6 @@ def welcome():
     exit_game = False
     while not exit_game:
         window.fill(cyan)
-        # win = pygame.image.load('D:\\aashu\\AashuPython\\OpenCV\\1.png')
-        # window.blit(win, (0,0))
         text = TextBox(
             window, 375, 50, 750, 150,
             colour=yellow,
@@ -178,7 +187,6 @@ def welcome():
             hoverColour=(255, 244, 122),
             pressedColour=(123, 234, 124),
             onClick=lambda: print("CLICK"),
-            # onRelease=gameloop(),
             shadowDistance=10,
             shadowColour=(50, 50, 50),
             radius=10,
@@ -206,9 +214,6 @@ def welcome():
 
             if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
                 gameloop()
-            # if event.type == pygame.MOUSEBUTTONDOWN:
-            #     return
-
 
         button.listen(events)
         button.draw()
@@ -221,5 +226,5 @@ def welcome():
 
 if __name__ == '__main__':
     welcome()
-    # time.sleep(2)
+
 
