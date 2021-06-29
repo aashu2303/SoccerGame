@@ -37,7 +37,7 @@ def plot_wall(window, color, specs):
 def ending(SCORE_1, SCORE_2):
     exit_game = False
     while not exit_game:
-        window.fill(black)
+        window.fill(cyan)
         text = TextBox(
             window, 600, 50, 335, 150,
             colour=yellow,
@@ -47,6 +47,28 @@ def ending(SCORE_1, SCORE_2):
             fontSize=100
         )
         text.setText("RESULT")
+        replay = Button(
+            window, 400, 450, 300, 100,
+            inactiveColour=(100, 200, 255),
+            hoverColour=(255, 244, 122),
+            onClick=lambda: gameloop(),
+            shadowDistance=10,
+            shadowColour=(50, 50, 50),
+            radius=10,
+            text='REPLAY',
+            fontSize=30,
+        )
+        exit = Button(
+            window, 800, 450, 300, 100,
+            inactiveColour=(100, 200, 255),
+            hoverColour=(255, 244, 122),
+            onClick=lambda: sys.exit(0),
+            shadowDistance=10,
+            shadowColour=(50, 50, 50),
+            radius=10,
+            text='EXIT GAME',
+            fontSize=30,
+        )
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.QUIT:
@@ -54,22 +76,24 @@ def ending(SCORE_1, SCORE_2):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     sys.exit(0)
-
+        text_screen(f"PLAYER-1 SCORE: {SCORE_1}", white, 400, 300)
+        text_screen(f"PLAYER-2 SCORE: {SCORE_2}", white, 800, 300)
         if SCORE_2 > SCORE_1:
-            text_screen(f"PLAYER 2 IS THE WINNER", red, 500, 300)
-            text_screen(f"SCORE DIFFERENCE: {SCORE_2 - SCORE_1}", red, 550, 400)
+            text_screen(f"PLAYER-2 IS THE WINNER!", magenta, 520, 375)
         elif SCORE_1 > SCORE_2:
-            text_screen(f"PLAYER 1 IS THE WINNER", red, 500, 300)
-            text_screen(f"SCORE DIFFERENCE: {SCORE_2 - SCORE_1}", red, 550, 400)
+            text_screen(f"PLAYER-1 IS THE WINNER!", magenta, 520, 375)
         else:
-            text_screen(f"THE GAME ENDED IN DRAW", red, 500, 300)
-            text_screen((f"WELL DONE PLAYERS!!"), red, 550, 400)
+            text_screen(f"Game has ended in a DRAW", magenta, 500, 375)
         text.draw()
+        replay.listen(events)
+        replay.draw()
+        exit.listen(events)
+        exit.draw()
         pygame.display.update()
         clock.tick(60)
 
 def gameloop():
-    time.sleep(1)
+    time.sleep(0.5)
     exit_game = False
     ball_x = 750
     ball_y = 350
@@ -91,7 +115,6 @@ def gameloop():
     border_color = green
     FPS = 60
     clock = pygame.time.Clock()
-
 
     while not exit_game:
         window.fill(black)
@@ -185,8 +208,7 @@ def welcome():
             window, 600, 250, 300, 100,
             inactiveColour=(100, 200, 255),
             hoverColour=(255, 244, 122),
-            pressedColour=(123, 234, 124),
-            onClick=lambda: print("CLICK"),
+            onClick=lambda: gameloop(),
             shadowDistance=10,
             shadowColour=(50, 50, 50),
             radius=10,
@@ -197,9 +219,7 @@ def welcome():
             window, 600, 450, 300, 100,
             inactiveColour=(100, 200, 255),
             hoverColour=(255, 244, 122),
-            pressedColour=(123, 234, 124),
-            onClick=lambda: print("Click"),
-            onRelease=lambda: sys.exit(0),
+            onClick=lambda: sys.exit(0),
             shadowDistance=10,
             shadowColour=(50, 50, 50),
             radius=10,
@@ -211,9 +231,6 @@ def welcome():
         for event in events:
             if event.type == pygame.QUIT:
                 exit_game = True
-
-            if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
-                gameloop()
 
         button.listen(events)
         button.draw()
