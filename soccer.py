@@ -23,6 +23,8 @@ clock = pygame.time.Clock()
 font = pygame.font.SysFont(None, 50)
 window = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('SOCCER GAME')
+icon = pygame.image.load("images/icon.jpg").convert()
+pygame.display.set_icon(icon)
 pygame.display.update()
 
 def text_screen(text, color, x, y):
@@ -37,7 +39,10 @@ def plot_wall(window, color, specs):
 def ending(SCORE_1, SCORE_2):
     exit_game = False
     while not exit_game:
-        window.fill(cyan)
+        window.fill(black)
+        im = pygame.image.load("images/goal.jpg")
+        im = pygame.transform.scale(im, (screen_width, screen_height))
+        window.blit(im, (0, 0))
         text = TextBox(
             window, 600, 50, 335, 150,
             colour=yellow,
@@ -76,8 +81,8 @@ def ending(SCORE_1, SCORE_2):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     sys.exit(0)
-        text_screen(f"PLAYER-1 SCORE: {SCORE_1}", white, 400, 300)
-        text_screen(f"PLAYER-2 SCORE: {SCORE_2}", white, 800, 300)
+        text_screen(f"PLAYER-1 SCORE: {SCORE_1 / 2}", black, 400, 300)
+        text_screen(f"PLAYER-2 SCORE: {SCORE_2 / 2}", black, 800, 300)
         if SCORE_2 > SCORE_1:
             text_screen(f"PLAYER-2 IS THE WINNER!", magenta, 520, 375)
         elif SCORE_1 > SCORE_2:
@@ -118,7 +123,13 @@ def gameloop():
 
     while not exit_game:
         window.fill(black)
-        for event in pygame.event.get():
+        img = pygame.image.load("images/cross.jpg").convert()
+        img = pygame.transform.scale(img, (80, 80))
+        bg = pygame.image.load("images/stadium.jpg").convert()
+        bg = pygame.transform.scale(bg, (screen_width, screen_height))
+        window.blit(bg, (0, 0))
+        events = pygame.event.get()
+        for event in events:
             if event.type == pygame.QUIT:
                 sys.exit(0)
             elif event.type == pygame.KEYDOWN:
@@ -164,7 +175,6 @@ def gameloop():
         if wall_y1 >= screen_height - wall_length - 5 or wall_y1 <= 165:
             wall_vel_1 = -wall_vel_1
 
-
         ball_x += ball_vel_x
         ball_y += ball_vel_y
         wall_y1 += wall_vel_1
@@ -174,8 +184,19 @@ def gameloop():
             SCORE_2 += 1
         if ball_x == wall_x2 + 10:
             SCORE_1 += 1
-
-        window.fill(black)
+        close = Button(
+            window, 650, 45, 80, 80,
+            inactiveColour=red,
+            hoverColour=(255, 244, 122),
+            onClick=lambda: ending(SCORE_1, SCORE_2),
+            shadowColour=(50, 50, 50),
+            radius=10,
+            # text='X',
+            image=img,
+            # imageHAlign=20,
+            # imageVAlign=20,
+            fontSize=60
+        )
         text_screen(f'PLAYER-1 SCORE: {SCORE_1 / 2}', yellow, 225, 50)
         text_screen(f"PLAYER-2 SCORE: {SCORE_2 / 2}", yellow, 975, 50)
         pygame.draw.rect(window, border_color, [0, 150, screen_width, 10])
@@ -187,14 +208,18 @@ def gameloop():
         plot_ball(window, ball_color, [ball_x, ball_y], ball_radius)
         plot_wall(window, wall_color, [wall_x1, wall_y1, wall_breadth, wall_length])
         plot_wall(window, wall_color, [wall_x2, wall_y2, wall_breadth, wall_length])
-
+        close.listen(events)
+        close.draw()
         pygame.display.update()
         clock.tick(FPS)
 
 def welcome():
     exit_game = False
     while not exit_game:
-        window.fill(cyan)
+        window.fill(black)
+        image = pygame.image.load("images/bg2.jpg")
+        image = pygame.transform.scale(image, (screen_width, screen_height))
+        window.blit(image, (40, 100))
         text = TextBox(
             window, 375, 50, 750, 150,
             colour=yellow,
