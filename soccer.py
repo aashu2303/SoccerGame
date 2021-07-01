@@ -38,20 +38,19 @@ def plot_wall(window, color, specs):
 
 def ending(SCORE_1, SCORE_2):
     exit_game = False
+    im = pygame.image.load("images/goal.jpg")
+    im = pygame.transform.scale(im, (screen_width, screen_height))
     while not exit_game:
-        window.fill(black)
-        im = pygame.image.load("images/goal.jpg")
-        im = pygame.transform.scale(im, (screen_width, screen_height))
         window.blit(im, (0, 0))
         text = TextBox(
-            window, 600, 50, 335, 150,
+            window, 525, 50, 465, 150,
             colour=yellow,
             borderColour=red,
             borderThickness=15,
             textColour=(0, 10, 20),
             fontSize=100
         )
-        text.setText("RESULT")
+        text.setText("IT'S A GOAL")
         replay = Button(
             window, 400, 450, 300, 100,
             inactiveColour=(100, 200, 255),
@@ -61,7 +60,7 @@ def ending(SCORE_1, SCORE_2):
             shadowColour=(50, 50, 50),
             radius=10,
             text='REPLAY',
-            fontSize=30,
+            fontSize=50,
         )
         exit = Button(
             window, 800, 450, 300, 100,
@@ -72,7 +71,7 @@ def ending(SCORE_1, SCORE_2):
             shadowColour=(50, 50, 50),
             radius=10,
             text='EXIT GAME',
-            fontSize=30,
+            fontSize=50,
         )
         events = pygame.event.get()
         for event in events:
@@ -118,15 +117,13 @@ def gameloop():
     SCORE_1 = 0
     SCORE_2 = 0
     border_color = green
-    FPS = 60
     clock = pygame.time.Clock()
+    img = pygame.image.load("images/cross.jpg").convert()
+    img = pygame.transform.scale(img, (80, 80))
+    bg = pygame.image.load("images/stadium.jpg").convert()
+    bg = pygame.transform.scale(bg, (screen_width, screen_height))
 
     while not exit_game:
-        window.fill(black)
-        img = pygame.image.load("images/cross.jpg").convert()
-        img = pygame.transform.scale(img, (80, 80))
-        bg = pygame.image.load("images/stadium.jpg").convert()
-        bg = pygame.transform.scale(bg, (screen_width, screen_height))
         window.blit(bg, (0, 0))
         events = pygame.event.get()
         for event in events:
@@ -186,16 +183,8 @@ def gameloop():
             SCORE_1 += 1
         close = Button(
             window, 650, 45, 80, 80,
-            inactiveColour=red,
-            hoverColour=(255, 244, 122),
             onClick=lambda: ending(SCORE_1, SCORE_2),
-            shadowColour=(50, 50, 50),
-            radius=10,
-            # text='X',
-            image=img,
-            # imageHAlign=20,
-            # imageVAlign=20,
-            fontSize=60
+            image=img
         )
         text_screen(f'PLAYER-1 SCORE: {SCORE_1 / 2}', yellow, 225, 50)
         text_screen(f"PLAYER-2 SCORE: {SCORE_2 / 2}", yellow, 975, 50)
@@ -211,14 +200,13 @@ def gameloop():
         close.listen(events)
         close.draw()
         pygame.display.update()
-        clock.tick(FPS)
+        clock.tick(60)
 
 def welcome():
     exit_game = False
+    image = pygame.image.load("images/bg2.jpg")
+    image = pygame.transform.scale(image, (screen_width, screen_height))
     while not exit_game:
-        window.fill(black)
-        image = pygame.image.load("images/bg2.jpg")
-        image = pygame.transform.scale(image, (screen_width, screen_height))
         window.blit(image, (40, 100))
         text = TextBox(
             window, 375, 50, 750, 150,
@@ -263,7 +251,7 @@ def welcome():
         button1.draw()
         text.draw()
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(80)
 
 
 if __name__ == '__main__':
