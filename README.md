@@ -13,13 +13,10 @@ You can install the modules by the following instructions.
 
 Now the Controls :)
 
-I have made the game as an Endless 2-Player game, "endless" just for fun, and the 2 players being PLAYER-1 and PLAYER-2. 
-
-Players can manually exit the game by clicking on the Cross button on the pygame window. 
-
-Player-1 controls his bar with the W/S keys. Player-2 controls his bar with the UP/DOWN keys.
-
-The GUI is pretty easy to understand. 
+1)I have made the game as an Endless 2-Player game, "endless" just for fun, and the 2 players being PLAYER-1 and PLAYER-2.
+2)Players can manually exit the game by clicking on the Cross button on the pygame window, at any point of time.
+3)Player-1 controls his bar with the W/S keys. Player-2 controls his bar with the UP/DOWN keys.
+4)The GUI is pretty easy to understand. 
 
 Hope you enjoy the game :)
 
