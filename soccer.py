@@ -89,9 +89,9 @@ def ending(score_1, score_2, name1, name2, ball_c, wall_c):
         text_screen(f"{name1}'S SCORE: {score_1 / 2}", black, 350, 300)
         text_screen(f"{name2}'S SCORE: {score_2 / 2}", black, 900, 300)
         if score_2 > score_1:
-            text_screen(f"PLAYER-2 IS THE WINNER!", magenta, 520, 375)
+            text_screen(f"{name2} IS THE WINNER!", magenta, 520, 375)
         elif score_1 > score_2:
-            text_screen(f"PLAYER-1 IS THE WINNER!", magenta, 520, 375)
+            text_screen(f"{name1} IS THE WINNER!", magenta, 520, 375)
         else:
             text_screen(f"Game has ended in a DRAW", magenta, 500, 375)
         text.draw()
