@@ -20,7 +20,7 @@ cyan = (0, 255, 255)
 pygame.init()
 pygame.mixer.init()
 clock = pygame.time.Clock()
-font = pygame.font.SysFont(None, 50)
+font = pygame.font.SysFont("ROG Fonts", 40)
 window = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('SOCCER GAME')
 icon = pygame.image.load("images/icon.jpg").convert()
@@ -47,17 +47,26 @@ def ending(score_1, score_2, name1, name2, ball_c, wall_c):
     im = pygame.transform.scale(im, (screen_width, screen_height))
     window.blit(im, (0, 0))
     text = TextBox(
-        window, 525, 50, 465, 150,
+        window, 475, 25, 575, 90,
         colour=yellow,
         borderColour=red,
         borderThickness=10,
         radius=5,
         textColour=(0, 10, 20),
-        fontSize=100
+        font=pygame.font.SysFont("ROG Fonts", 65)
     )
-    text.setText("IT'S A GOAL")
+    text.setText(" GAME ENDED")
+    final_note = TextBox(
+        window, 325, 500, 920, 70,
+        colour=yellow,
+        borderColour=red,
+        borderThickness=5,
+        radius=5,
+        textColour=(0, 10, 20),
+        font=pygame.font.SysFont('ROG Fonts', 50)
+    )
     replay = Button(
-        window, 500, 450, 200, 80,
+        window, 450, 600, 250, 80,
         inactiveColour=(100, 150, 255),
         hoverColour=(255, 244, 122),
         onClick=lambda: gameloop(name1, name2, ball_c, wall_c),
@@ -65,10 +74,10 @@ def ending(score_1, score_2, name1, name2, ball_c, wall_c):
         shadowColour=(50, 50, 50),
         radius=10,
         text='REPLAY',
-        fontSize=40,
+        font=pygame.font.SysFont("ROG Fonts", 30)
     )
     exite = Button(
-        window, 800, 450, 200, 80,
+        window, 800, 600, 250, 80,
         inactiveColour=(100, 150, 255),
         hoverColour=(255, 244, 122),
         onClick=lambda: sys.exit(0),
@@ -76,8 +85,46 @@ def ending(score_1, score_2, name1, name2, ball_c, wall_c):
         shadowColour=(50, 50, 50),
         radius=10,
         text='EXIT GAME',
-        fontSize=40,
+        font=pygame.font.SysFont("ROG Fonts", 30)
     )
+    player1_score = TextBox(
+        window, 325, 225, 400, 60,
+        font=pygame.font.SysFont("ROG Fonts", 35),
+        radius=5,
+        borderColour=blue,
+        borderThickness=5,
+    )
+    player1_score.setText(f"{name1} SCORE")
+    player2_score = TextBox(
+        window, 825, 225, 420, 60,
+        font=pygame.font.SysFont("ROG Fonts", 35),
+        radius=5,
+        borderColour=blue,
+        borderThickness=5,
+    )
+    player2_score.setText(f"{name2} SCORE")
+    sc_1 = TextBox(
+        window, 500, 300, 150, 110,
+        font=pygame.font.SysFont("ROG Fonts", 55),
+        radius=5,
+        borderColour=blue,
+        borderThickness=5,
+    )
+    sc_1.setText(f"{score_1 / 2}")
+    sc_2 = TextBox(
+        window, 900, 300, 150, 110,
+        font=pygame.font.SysFont("ROG Fonts", 55),
+        radius=5,
+        borderColour=blue,
+        borderThickness=5,
+    )
+    sc_2.setText(f"{score_2 / 2}")
+    if score_2 > score_1:
+        final_note.setText(f"   {name2} IS THE WINNER!")
+    elif score_1 > score_2:
+        final_note.setText(f"   {name1} IS THE WINNER!")
+    else:
+        final_note.setText(f" GAME HAS ENDED IN A DRAW")
     while not exit_game:
         events = pygame.event.get()
         for event in events:
@@ -86,19 +133,17 @@ def ending(score_1, score_2, name1, name2, ball_c, wall_c):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     sys.exit(0)
-        text_screen(f"{name1}'S SCORE: {score_1 / 2}", black, 350, 300)
-        text_screen(f"{name2}'S SCORE: {score_2 / 2}", black, 900, 300)
-        if score_2 > score_1:
-            text_screen(f"{name2} IS THE WINNER!", magenta, 520, 375)
-        elif score_1 > score_2:
-            text_screen(f"{name1} IS THE WINNER!", magenta, 520, 375)
-        else:
-            text_screen(f"Game has ended in a DRAW", magenta, 500, 375)
+
         text.draw()
         replay.listen(events)
         replay.draw()
         exite.listen(events)
         exite.draw()
+        final_note.draw()
+        player1_score.draw()
+        player2_score.draw()
+        sc_1.draw()
+        sc_2.draw()
         pygame.display.update()
         clock.tick(60)
 
@@ -141,11 +186,11 @@ def gameloop(name1, name2, ball_c, wall_c):
         image=imag
     )
     ws = Button(
-        window, 40, 30, 80, 100,
+        window, 30, 30, 80, 100,
         image=ws_img
     )
     updown = Button(
-        window, 1370, 30, 80, 100,
+        window, 1380, 30, 80, 100,
         image=updown_img
     )
     while not exit_game:
@@ -208,8 +253,8 @@ def gameloop(name1, name2, ball_c, wall_c):
             SCORE_2 += 1
         if ball_x == wall_x2 + 10:
             SCORE_1 += 1
-        text_screen(f"{player1}'S SCORE: {SCORE_1 / 2}", yellow, 175, 50)
-        text_screen(f"{player2}'S SCORE: {SCORE_2 / 2}", yellow, 925, 50)
+        text_screen(f"{player1} SCORE: {SCORE_1 / 2}", yellow, 135, 50)
+        text_screen(f"{player2} SCORE: {SCORE_2 / 2}", yellow, 810, 50)
         pygame.draw.rect(window, border_color, [0, 150, screen_width, 10])
         pygame.draw.rect(window, border_color, [screen_width / 2 - 5, 0, 10, 700])
         pygame.draw.rect(window, border_color, [0, 0, 10, screen_height])
@@ -233,50 +278,50 @@ def settings():
     image = pygame.image.load("images/bg2.jpg").convert()
     image = pygame.transform.scale(image, (screen_width, screen_height))
     text = TextBox(
-        window, 600, 50, 290, 100,
+        window, 550, 50, 480, 90,
         colour=yellow,
         radius=5,
         borderColour=red,
         borderThickness=10,
         textColour=(0, 10, 20),
-        fontSize=70
+        font=pygame.font.SysFont("ROG Fonts", 65),
     )
-    text.setText("SETTINGS")
+    text.setText(" SETTINGS")
 # PLAYER NAMES
     player1_name = TextBox(
-        window, 625, 200, 250, 60,
+        window, 625, 200, 280, 60,
         fontSize=40,
         radius=5,
         borderColour=cyan,
         borderThickness=5,
-        placeholderText="Enter Player-1 Name"
+        font=pygame.font.SysFont("ROG Fonts", 40)
     )
     player2_name = TextBox(
-        window, 625, 300, 250, 60,
+        window, 625, 300, 290, 60,
         fontSize=40,
         radius=5,
         borderThickness=5,
         borderColour=cyan,
-        placeholderText="Enter Player-2 Name"
+        font=pygame.font.SysFont("ROG Fonts", 40)
     )
     player1_name.setText("PLAYER-1")
     player2_name.setText("PLAYER-2")
     ball_name = TextBox(
-        window, 80, 80, 230, 60,
-        fontSize=40,
+        window, 80, 80, 285, 40,
+        font=pygame.font.SysFont("ROG Fonts", 30),
         radius=5,
         borderColour=cyan,
         borderThickness=5
     )
-    ball_name.setText("BALL COLOUR")
+    ball_name.setText(" BALL COLOUR")
     wall_name = TextBox(
-        window, 1200, 80, 230, 60,
-        fontSize=40,
+        window, 1200, 80, 285, 40,
+        font=pygame.font.SysFont("ROG Fonts", 30),
         radius=5,
         borderColour=cyan,
         borderThickness=5
     )
-    wall_name.setText("WALL COLOUR")
+    wall_name.setText(" WALL COLOUR")
 # BALL COLORS
     ball_r = Slider(
         window, 300, 400, 200, 30,
@@ -358,7 +403,7 @@ def settings():
         shadowColour=(50, 50, 50),
         radius=10,
         text='PLAY',
-        fontSize=40,
+        font=pygame.font.SysFont("ROG Fonts", 30),
     )
     back = Button(
         window, 550, 550, 150, 80,
@@ -369,7 +414,7 @@ def settings():
         shadowColour=(50, 50, 50),
         radius=10,
         text='BACK',
-        fontSize=40,
+        font=pygame.font.SysFont("ROG Fonts", 30),
     )
     while not exit_game:
         window.fill(black)
@@ -430,15 +475,15 @@ def welcome():
     image = pygame.transform.scale(image, (screen_width, screen_height))
     window.blit(image, (40, 80))
     text = TextBox(
-        window, 375, 50, 740, 150,
+        window, 325, 50, 900, 100,
         colour=yellow,
         radius=5,
         borderColour=red,
         borderThickness=10,
         textColour=(0, 10, 20),
-        fontSize=100
+        font=pygame.font.SysFont("ROG Fonts", 70),
     )
-    text.setText("THE SOCCER GAME")
+    text.setText(f" THE SOCCER GAME")
     button = Button(
         window, 600, 300, 300, 100,
         inactiveColour=(100, 150, 255),
@@ -448,7 +493,7 @@ def welcome():
         shadowColour=(50, 50, 50),
         radius=10,
         text='START',
-        fontSize=50,
+        font=font
     )
     button1 = Button(
         window, 600, 450, 300, 100,
@@ -459,7 +504,7 @@ def welcome():
         shadowColour=(50, 50, 50),
         radius=10,
         text='EXIT',
-        fontSize=50,
+        font=font
     )
     while not exit_game:
         events = pygame.event.get()
